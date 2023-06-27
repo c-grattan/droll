@@ -1,0 +1,45 @@
+import { DiceSet } from "./DiceSet";
+
+export class Roll {
+	private sets: DiceSet[] = []; 
+
+	public addSet(set: DiceSet) {
+		this.sets.push(set);
+	}
+
+	public getSets(): DiceSet[] {
+		return this.sets;
+	}
+
+	public roll(): number {
+		return this.sets.map((value) => {
+			return value.roll();
+		}).reduce((previousValue, currentValue) => {
+			return previousValue + currentValue;
+		});
+	}
+
+	public getMinimum(): number {
+		return this.sets.map((value) => {
+			return value.getMinimum();
+		}).reduce((previous, current) => {
+			return previous + current;
+		});
+	}
+
+	public getAverage(): number {
+		return this.sets.map((value) => {
+			return value.getAverage();
+		}).reduce((previous, current) => {
+			return previous + current;
+		});
+	}
+
+	public getMaximum(): number {
+		return this.sets.map((value) => {
+			return value.getMaximum();
+		}).reduce((previous, current) => {
+			return previous + current;
+		});
+	}
+}
