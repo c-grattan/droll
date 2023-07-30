@@ -27,6 +27,22 @@ export class Die {
 		return this.maximum;
 	}
 
+	public getSides(): number {
+		return this.sides;
+	}
+
+	public setSides(sides: number): void {
+		this.sides = sides;
+	}
+
+	public getModifier(): number {
+		return this.modifier;
+	}
+
+	public setModifier(modifier: number): void {
+		this.modifier = modifier;
+	}
+
 	constructor(sides: number, modifier: number = 0) {
 		this.sides = Math.floor(sides);
 		this.modifier = modifier;

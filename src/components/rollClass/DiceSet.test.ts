@@ -63,22 +63,38 @@ describe('Reducer', () => {
 		set.disconnectReducer();
 		expect(set.getReducer()).toBeUndefined();
 	});
+});
 
-	// describe('Gets correct', () => {
-	// 	const d = new Die(6, 1);
-	// 	const set: DiceSet = new DiceSet(4, d);
-	// 	set.connectReducer(testReducer);
+describe('Getters', () => {
+	test('Count', () => {
+		const expected = 4;
+		const d = new Die(6, 1);
+		const set: DiceSet = new DiceSet(expected, d);
+		expect(set.getCount()).toEqual(expected);
+	});
 
-	// 	test('Minimum roll', () => {
-	// 		expect(set.getMinimum()).toEqual(4);
-	// 	});
-	
-	// 	test('Average roll', () => {
-	// 		expect(set.getAverage()).toEqual(9);
-	// 	});
-	
-	// 	test('Maximum roll', () => {
-	// 		expect(set.getMaximum()).toEqual(14);
-	// 	});
-	// });
+	test('Die Type', () => {
+		const expected = new Die(6, 1);
+		const set: DiceSet = new DiceSet(4, expected);
+		expect(set.getDieType()).toEqual(expected);
+	});
+});
+
+describe('Setters', () => {
+	test('Count', () => {
+		const expected = 4;
+		const d = new Die(6, 1);
+		const set: DiceSet = new DiceSet(expected + 10, d);
+		expect(set.getCount()).not.toEqual(expected);
+		set.setCount(expected);
+		expect(set.getCount()).toEqual(expected);
+	});
+
+	test('Count', () => {
+		const expected = new Die(6, 1);
+		const set: DiceSet = new DiceSet(4, new Die(0, 0));
+		expect(set.getDieType()).not.toEqual(expected);
+		set.setDieType(expected);
+		expect(set.getDieType()).toEqual(expected);
+	});
 });

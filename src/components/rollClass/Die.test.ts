@@ -19,6 +19,38 @@ describe('Die rolls correct value', () => {
 	});
 });
 
+describe('Getters', () => {
+	test('Sides', () => {
+		const sides = 6;
+		const d = new Die(sides);
+		expect(d.getSides()).toEqual(sides);
+	});
+
+	test('Modifier', () => {
+		const modifier = 1;
+		const d = new Die(6, modifier);
+		expect(d.getModifier()).toEqual(modifier);
+	});
+});
+
+describe('setters', () => {
+	test('Sides', () => {
+		const sides = 6;
+		const d = new Die(sides + 10);
+		expect(d.getSides()).not.toEqual(sides);
+		d.setSides(sides);
+		expect(d.getSides()).toEqual(sides);
+	});
+
+	test('Modifier', () => {
+		const modifier = 1;
+		const d = new Die(modifier + 10);
+		expect(d.getModifier()).not.toEqual(modifier);
+		d.setModifier(modifier);
+		expect(d.getModifier()).toEqual(modifier);
+	});
+});
+
 describe('Die calculates correct', () => {
 	test('Minimum roll', () => {
 		const d = new Die(6, 1);

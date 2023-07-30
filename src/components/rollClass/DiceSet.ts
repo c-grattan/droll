@@ -11,6 +11,22 @@ export class DiceSet {
 		this.dieType = dieType;
 	}
 
+	public getCount(): number {
+		return this.count;
+	}
+
+	public setCount(val: number): void {
+		this.count = val;
+	}
+
+	public getDieType(): Die {
+		return this.dieType;
+	}
+
+	public setDieType(die: Die): void {
+		this.dieType = die;
+	}
+
 	private getRolls(): number[] {
 		const rolls: number[] = [];
 		for(let i = 0; i < this.count; i++) {
@@ -25,19 +41,15 @@ export class DiceSet {
 
 	public roll(): number {
 		const rolls: number[] = this.getRolls();
-
+		
 		return this.reducer
 			? this.reducer.reduce(rolls)
 			: this.total(rolls);
 	}
 
-	private getArrayOf(len: number, val: number): number[] {
-		return Array.from({length: len}).map(() => val);
-	}
-
 	private getStatsFor(dieStat: number): number {
 		if(this.reducer) {
-			const rolls = this.getArrayOf(this.count, dieStat);
+			const rolls = Array.from({length: this.count}).map(() => dieStat);
 			return this.reducer.reduce(rolls);
 		} else {
 			return dieStat * this.count;
