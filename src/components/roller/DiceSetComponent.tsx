@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DiceSet } from "../rollClass/DiceSet";
+import { DiceSet } from "../../classes/rollClass/DiceSet";
 import { DieComponent } from "./DieComponent";
 
 type DSCProps = {
@@ -17,5 +17,6 @@ export const DiceSetComponent = ({diceSet}: DSCProps) => {
 	return (<>
 		<input type="number" data-testid="diceSetComponent-count" value={count} onChange={(event: React.ChangeEvent<HTMLInputElement>) => {updateCount(+event.target.value)}} />
 		<DieComponent die={diceSet.getDieType()} />
+		<br/>
 	</>);
 };

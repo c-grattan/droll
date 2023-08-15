@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { DiceSet } from "../rollClass/DiceSet"
-import { Die } from "../rollClass/Die";
+import { DiceSet } from "../../classes/rollClass/DiceSet"
+import { Die } from "../../classes/rollClass/Die";
 import { DiceSetComponent } from "./DiceSetComponent"
 import { DieComponent } from "./DieComponent";
 

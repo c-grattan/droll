@@ -7,6 +7,10 @@ export class Roll {
 		this.sets.push(set);
 	}
 
+	public removeSet(index: number) {
+		this.sets.splice(index, 1);
+	}
+
 	public getSets(): DiceSet[] {
 		return this.sets;
 	}

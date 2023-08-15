@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { Die } from "../rollClass/Die";
+import { Die } from "../../classes/rollClass/Die";
 import { DieComponent } from "./DieComponent";
 
 describe('No. of sides', () => {

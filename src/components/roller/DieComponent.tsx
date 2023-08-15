@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Die } from "../rollClass/Die"
+import { Die } from "../../classes/rollClass/Die"
 
 type DCProps = {
 	die: Die
@@ -20,7 +20,7 @@ export const DieComponent = ({die}: DCProps) => {
 	}
 
 	return (<>
-		<input type="number" data-testid="dieComponent-sides" value={sides} onChange={(event: React.ChangeEvent<HTMLInputElement>) => {updateSides(+event.target.value)}}/>
-		<input type="number" data-testid="dieComponent-modifier" value={modifier} onChange={(event: React.ChangeEvent<HTMLInputElement>) => {updateModifier(+event.target.value)}}/>
+		d<input type="number" data-testid="dieComponent-sides" value={sides} onChange={(event: React.ChangeEvent<HTMLInputElement>) => {updateSides(+event.target.value)}}/>
+		+<input type="number" data-testid="dieComponent-modifier" value={modifier} onChange={(event: React.ChangeEvent<HTMLInputElement>) => {updateModifier(+event.target.value)}}/>
 	</>);
 }
