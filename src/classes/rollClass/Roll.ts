@@ -20,7 +20,7 @@ export class Roll {
 			return value.roll();
 		}).reduce((previousValue, currentValue) => {
 			return previousValue + currentValue;
-		});
+		}, 0);
 	}
 
 	public getMinimum(): number {
@@ -28,7 +28,7 @@ export class Roll {
 			return value.getMinimum();
 		}).reduce((previous, current) => {
 			return previous + current;
-		});
+		}, 0);
 	}
 
 	public getAverage(): number {
@@ -36,7 +36,7 @@ export class Roll {
 			return value.getAverage();
 		}).reduce((previous, current) => {
 			return previous + current;
-		});
+		}, 0);
 	}
 
 	public getMaximum(): number {
@@ -44,6 +44,6 @@ export class Roll {
 			return value.getMaximum();
 		}).reduce((previous, current) => {
 			return previous + current;
-		});
+		}, 0);
 	}
 }
