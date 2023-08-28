@@ -4,16 +4,12 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import { Roll } from "./classes/rollClass/Roll";
-import { RollComponent } from "./components/roller/RollComponent";
-import { ConfirmDialogButton } from './components/confirmdialogbutton/ConfirmDialogButton';
-import { RollSummary } from './components/rollsummary/RollSummary';
+import { Roller } from './components/roller/Roller';
 
 function App() {
 	const roll = new Roll();
 	return (<>
-		<RollComponent roll={roll} />
-		<ConfirmDialogButton />
-		<RollSummary roll={roll} />
+		<Roller />
 	</>);
 }
 
