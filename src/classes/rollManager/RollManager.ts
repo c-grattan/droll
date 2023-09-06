@@ -1,13 +1,13 @@
 import { Roll } from "../rollClass/Roll";
 
-type RollStorageObject = {
+export type RollStorageObject = {
 	roll: Roll,
 	name?: string,
 	category?: string
 };
 
 export class RollManager {
-	private rolls: RollStorageObject[] = [];
+	public rolls: RollStorageObject[] = [];
 
 	public addRoll(roll: Roll, rollOptions?: {
 		rollName?: string,

@@ -3,13 +3,14 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-import { Roll } from "./classes/rollClass/Roll";
 import { Roller } from './components/roller/Roller';
+import { RollManager } from './classes/rollManager/RollManager';
 
 function App() {
-	const roll = new Roll();
+	const rollManager = new RollManager();
+
 	return (<>
-		<Roller />
+		<Roller rollManager={rollManager} />
 	</>);
 }
 

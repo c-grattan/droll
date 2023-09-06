@@ -3,7 +3,7 @@ import { useState } from "react";
 
 type CDBProps = {
 	onSubmit?: () => void,
-	children?: JSX.Element
+	children?: JSX.Element[] | JSX.Element
 }
 
 export const ConfirmDialogButton = ({onSubmit, children}: CDBProps) => {
