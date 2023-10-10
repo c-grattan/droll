@@ -3,12 +3,20 @@ import { DiceSet } from "./DiceSet";
 export class Roll {
 	private sets: DiceSet[] = []; 
 
+	constructor(sets?: DiceSet[]) {
+		this.sets = sets ? sets : []
+	}
+
 	public addSet(set: DiceSet) {
 		this.sets.push(set);
 	}
 
 	public removeSet(index: number) {
 		this.sets.splice(index, 1);
+	}
+
+	public setSet(index: number, set: DiceSet) {
+		this.sets[index] = set;
 	}
 
 	public getSets(): DiceSet[] {

@@ -6,13 +6,21 @@ export class Die {
 	private average: number = 0;
 	private maximum: number = 0;
 
-	private calculateAverage(sides: number): number {
+	private calculateMinimum(): void {
+		this.minimum = 1 + this.modifier;
+	}
+
+	private calculateAverage(): void {
 		let avg: number = 0;
-		let highestSide = sides;
+		let highestSide = this.sides;
 		while(highestSide > 0) {
 			avg += highestSide--;
 		}
-		return avg / sides;
+		this.average = avg / this.sides + this.modifier;;
+	}
+
+	private calculateMaximum(): void {
+		this.maximum = this.sides + this.modifier;
 	}
 
 	public getMinimum(): number {
@@ -33,6 +41,8 @@ export class Die {
 
 	public setSides(sides: number): void {
 		this.sides = sides;
+		this.calculateAverage();
+		this.calculateMaximum();
 	}
 
 	public getModifier(): number {
@@ -41,14 +51,17 @@ export class Die {
 
 	public setModifier(modifier: number): void {
 		this.modifier = modifier;
+		this.calculateMinimum();
+		this.calculateAverage();
+		this.calculateMaximum();
 	}
 
 	constructor(sides: number, modifier: number = 0) {
 		this.sides = Math.floor(sides);
 		this.modifier = modifier;
-		this.minimum = 1 + modifier;
-		this.average = this.calculateAverage(sides) + modifier;
-		this.maximum = sides + modifier;
+		this.calculateMinimum();
+		this.calculateAverage();
+		this.calculateMaximum();
 	}
 
 	public roll(): number {
