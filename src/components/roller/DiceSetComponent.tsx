@@ -19,7 +19,7 @@ export enum reducerType {
 export const DiceSetComponent = ({diceSet, updateSet}: DSCProps) => {
 	const [localSet, setLocalSet] = useState(diceSet);
 
-	if(localSet !== diceSet) {
+	if(updateSet && localSet !== diceSet) {
 		setLocalSet(diceSet);
 	}
 
@@ -86,7 +86,7 @@ export const DiceSetComponent = ({diceSet, updateSet}: DSCProps) => {
 						<option value={reducerType.DISCARD}>Discard</option>
 					</select>
 					<input data-testid="diceSetComponent-reducerVar" type="number" value={localSet.getReducer()?.getVariable()} onChange={(event) => {updateReducerVariable(+event.target.value)}} />
-					Highest Rolls
+					Highest
 					<button data-testid="diceSetComponent-removeReducer" onClick={() => {updateReducer(undefined)}}>Remove reducer</button>
 				</>
 				: <button data-testid="diceSetComponent-addReducer" onClick={() => {changeReducerType(reducerType.KEEP)}}>Add reducer</button>

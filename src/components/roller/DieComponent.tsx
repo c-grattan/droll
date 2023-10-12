@@ -9,8 +9,12 @@ type DCProps = {
 export const DieComponent = ({die, updateDie}: DCProps) => {
 	const [localDie, setLocalDie] = useState(new Die(die.getSides(), die.getModifier()));
 
+	if(updateDie && localDie !== die) {
+		setLocalDie(die);
+	}
+
 	function refreshDie() {
-		setLocalDie(new Die(die.getSides(), die.getModifier()));
+		setLocalDie(die);
 		if(updateDie) {
 			updateDie(die);
 		}
