@@ -47,3 +47,11 @@ describe('Modifier', () => {
 		expect(changeableDie.getModifier()).toEqual(expected);
 	});
 });
+
+it('Should call set update function when provided', () => {
+	const updateDie = jest.fn();
+	render(<DieComponent die={new Die(6)} updateDie={updateDie} />);
+	fireEvent.change(screen.getByTestId('dieComponent-sides'), {target: {value: 0}});
+	fireEvent.change(screen.getByTestId('dieComponent-modifier'), {target: {value: 1}});
+	expect(updateDie).toBeCalledTimes(2);
+})

@@ -57,3 +57,18 @@ describe('Gets correct', () => {
 		expect(r.getMaximum()).toEqual(94);
 	})
 });
+
+describe('Sets correct', () => {
+	test('Sets', () => {
+		const die = new Die(6, 1);
+		const die2 = new Die(20);
+		const set1 = new DiceSet(2, die);
+		const set2 = new DiceSet(4, die2);
+		const sets = [set1, set2];
+		const r: Roll = new Roll(sets);
+		expect(r.getSets()[0]).not.toEqual(set2);
+
+		r.setSet(0, set2);
+		expect(r.getSets()[0]).toEqual(set2);
+	});
+});

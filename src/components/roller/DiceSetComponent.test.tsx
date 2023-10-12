@@ -91,3 +91,12 @@ describe('Reducer', () => {
 		expect(variableInput).toHaveValue(testDiceSet.getReducer()?.getVariable());
 	});
 });
+
+test('Update function called', () => {
+	const updateFunction = jest.fn();
+	const testComponent = <DiceSetComponent diceSet={new DiceSet(4, new Die(6))} updateSet={updateFunction} />;
+	render(testComponent);
+	fireEvent.change(screen.getByTestId('dieComponent-sides'), {target: {value: 0}});
+	fireEvent.change(screen.getByTestId('dieComponent-modifier'), {target: {value: 1}});
+	expect(updateFunction).toBeCalledTimes(2);
+});

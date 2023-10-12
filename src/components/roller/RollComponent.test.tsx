@@ -7,12 +7,12 @@ import { RollComponent } from "./RollComponent";
 describe('Tests w/ initial sets', () => {
 	test('Number of children to equal number of dice sets', () => {
 		const d = new Die(6, 1);
-		const set: DiceSet = new DiceSet(2, d);
+		const set1: DiceSet = new DiceSet(2, d);
+		const set2: DiceSet = new DiceSet(4, d);
 		const testRoll = new Roll();
-		testRoll.addSet(set);
-		testRoll.addSet(set);
+		testRoll.addSet(set1);
+		testRoll.addSet(set2);
 		const testComponent = <RollComponent roll={testRoll} />;
-	
 		expect(testRoll.getSets()).toHaveLength(2);
 		render(testComponent);
 		expect(screen.queryAllByTestId('diceSetComponent-count')).toHaveLength(2);
@@ -26,7 +26,6 @@ describe('Tests w/ initial sets', () => {
 		testRoll.addSet(set1);
 		testRoll.addSet(set2);
 		const testComponent = <RollComponent roll={testRoll} />;
-
 		render(testComponent);
 		const removeButtons = screen.queryAllByTestId('rollComponent-removeSet');
 		expect(removeButtons).toHaveLength(2);
@@ -36,6 +35,25 @@ describe('Tests w/ initial sets', () => {
 		expect(screen.queryAllByTestId('diceSetComponent-count')).toHaveLength(1);
 		expect(testRoll.getSets()).toHaveLength(1);
 		expect(testRoll.getSets()[0]).toEqual(set2);
+	});
+
+	test('Can update set', () => {
+		const d = new Die(6, 1);
+		const set1: DiceSet = new DiceSet(2, d);
+		const set2: DiceSet = new DiceSet(4, d);
+		const testRoll = new Roll();
+		testRoll.addSet(set1);
+		testRoll.addSet(set2);
+
+		const testComponent = <RollComponent roll={testRoll} />;
+		render(testComponent);
+
+		const countInputs = screen.queryAllByTestId('diceSetComponent-count');
+		expect(countInputs).toHaveLength(2);
+		const expected: Number = 10;
+		expect(testRoll.getSets()[0].getCount()).not.toEqual(expected);
+		fireEvent.change(countInputs[0], {target: {value: expected}});
+		expect(testRoll.getSets()[0].getCount()).toEqual(expected);
 	});
 });
 

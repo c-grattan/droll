@@ -2,13 +2,24 @@ import { Roll } from "../rollClass/Roll";
 import { RollManager } from "./RollManager";
 
 describe('Getters', () => {
-	it('Can retreive a set of rolls', () => {
-		const rollManager = new RollManager();
-		const testRoll = new Roll();
-		rollManager.addRoll(testRoll);
+	const rollManager = new RollManager();
+	const testRoll = new Roll();
+	rollManager.addRoll(testRoll);
+
+	it('Can get a list of rolls', () => {
 		const rolls: Roll[] = rollManager.getRolls();
 		expect(rolls).toHaveLength(1);
 		expect(rolls[0]).toEqual(testRoll);
+	});
+
+	it('Can get a set of categories', () => {
+		const categories: string[] = rollManager.getCategories();
+		expect(categories[0]).toEqual('');
+	});
+
+	it('Can get a list of names', () => {
+		const names: string[] = rollManager.getNames();
+		expect(names[0]).toEqual('');
 	});
 });
 
