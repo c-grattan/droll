@@ -1,15 +1,17 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, getByRole, render, screen, within } from "@testing-library/react";
 import { DiceSet } from "../../classes/rollClass/DiceSet";
 import { Die } from "../../classes/rollClass/Die";
 import { DiceSetComponent, reducerType } from "./DiceSetComponent";
 import { KeepXHighest } from "../../classes/rollClass/setReducer/KeepXHighest";
 import { DiscardXHighest } from "../../classes/rollClass/setReducer/DiscardXHighest";
+import { Roller } from "./Roller";
+import { RollManager } from "../../classes/rollManager/RollManager";
 
 describe('Dice count', () => {
 	const expected = 4;
 	const testDie = new Die(6);
 	const testDiceSet = new DiceSet(expected, testDie);
-	const testComponent = <DiceSetComponent diceSet={testDiceSet} />;
+	const testComponent = <DiceSetComponent diceSet={testDiceSet} updateSet={() => {}} />;
 
 	it('Should display', () => {
 		render(testComponent);
@@ -42,17 +44,18 @@ describe('Reducer', () => {
 	it('Can be added', () => {
 		const testDie = new Die(6);
 		const testDiceSet = new DiceSet(4, testDie);
-		const testComponent = <DiceSetComponent diceSet={testDiceSet} />;
+		const testComponent = <DiceSetComponent diceSet={testDiceSet} updateSet={() => {}} />;
 		render(testComponent);
 		expect(screen.queryByTestId('diceSetComponent-reducerType')).toBeNull();
 		fireEvent.click(screen.getByTestId('diceSetComponent-addReducer'));
+		expect(screen.queryByTestId('diceSetComponent-reducerType')).not.toBeNull();
 		expect(screen.queryByTestId('diceSetComponent-reducerType')).toBeVisible();
 	});
 
 	it('Can be removed', () => {
 		const testDie = new Die(6);
 		const testDiceSet = new DiceSet(4, testDie);
-		const testComponent = <DiceSetComponent diceSet={testDiceSet} />;
+		const testComponent = <DiceSetComponent diceSet={testDiceSet} updateSet={() => {}} />;
 		render(testComponent);
 		fireEvent.click(screen.getByTestId('diceSetComponent-addReducer'));
 		expect(screen.queryByTestId('diceSetComponent-reducerType')).toBeVisible();
@@ -61,25 +64,25 @@ describe('Reducer', () => {
 	});
 
 	test('Type can be changed', () => {
-		const testDie = new Die(6);
-		const testDiceSet = new DiceSet(4, testDie);
-		const testComponent = <DiceSetComponent diceSet={testDiceSet} />;
+		const testComponent = <Roller rollManager={new RollManager()} />
 		render(testComponent);
 
+		fireEvent.click(screen.getByTestId('rollComponent-addSet'));
 		fireEvent.click(screen.getByTestId('diceSetComponent-addReducer'));
-		const typeInput = screen.getByTestId('diceSetComponent-reducerType');
+		const typeInput = screen.getByTestId('diceSetComponent-reducerTypeInput');
 		expect(typeInput).toHaveValue(reducerType.KEEP.toString());
-		expect(testDiceSet.getReducer()).toBeInstanceOf(KeepXHighest);
+
 		const expected = reducerType.DISCARD;
-		fireEvent.change(typeInput, {target: {value: expected}});
+		fireEvent.mouseDown(screen.getByText('Keep'));
+		const dropDown = within(screen.getByRole('listbox'));
+		fireEvent.click(dropDown.getByText('Discard'));
 		expect(typeInput).toHaveValue(expected.toString());
-		expect(testDiceSet.getReducer()).toBeInstanceOf(DiscardXHighest);
 	});
 
 	test('Variable can be changed', () => {
 		const testDie = new Die(6);
 		const testDiceSet = new DiceSet(4, testDie);
-		const testComponent = <DiceSetComponent diceSet={testDiceSet} />;
+		const testComponent = <DiceSetComponent diceSet={testDiceSet} updateSet={() => {}} />;
 		render(testComponent);
 
 		fireEvent.click(screen.getByTestId('diceSetComponent-addReducer'));

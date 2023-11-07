@@ -5,10 +5,11 @@ import { KeepXHighest } from "../../classes/rollClass/setReducer/KeepXHighest";
 import { DiscardXHighest } from "../../classes/rollClass/setReducer/DiscardXHighest";
 import { Die } from "../../classes/rollClass/Die";
 import { useState } from "react";
+import { Button, Grid, MenuItem, TextField } from "@mui/material";
 
 type DSCProps = {
 	diceSet: DiceSet,
-	updateSet?: (set: DiceSet) => void
+	updateSet: (set: DiceSet) => void
 }
 
 export enum reducerType {
@@ -19,7 +20,7 @@ export enum reducerType {
 export const DiceSetComponent = ({diceSet, updateSet}: DSCProps) => {
 	const [localSet, setLocalSet] = useState(diceSet);
 
-	if(updateSet && localSet !== diceSet) {
+	if(localSet !== diceSet) {
 		setLocalSet(diceSet);
 	}
 
@@ -75,22 +76,52 @@ export const DiceSetComponent = ({diceSet, updateSet}: DSCProps) => {
 	}
 
 
-	return (<>
-		<input type="number" data-testid="diceSetComponent-count" value={localSet.getCount()} onChange={(event: React.ChangeEvent<HTMLInputElement>) => {updateCount(+event.target.value)}} />
-		<DieComponent die={localSet.getDieType()} updateDie={(die) => updateDie(die)} />
-		{
-			localSet.getReducer()
-				? <>
-					<select data-testid="diceSetComponent-reducerType" onChange={(event) => changeReducerType(+event.target.value)}>
-						<option value={reducerType.KEEP}>Keep</option>
-						<option value={reducerType.DISCARD}>Discard</option>
-					</select>
-					<input data-testid="diceSetComponent-reducerVar" type="number" value={localSet.getReducer()?.getVariable()} onChange={(event) => {updateReducerVariable(+event.target.value)}} />
-					Highest
-					<button data-testid="diceSetComponent-removeReducer" onClick={() => {updateReducer(undefined)}}>Remove reducer</button>
-				</>
-				: <button data-testid="diceSetComponent-addReducer" onClick={() => {changeReducerType(reducerType.KEEP)}}>Add reducer</button>
-		}
+	return (<Grid container>
+		<Grid item xs={12} md={3}>
+			<TextField
+				inputProps={{
+					"data-testid": "diceSetComponent-count"
+				}}
+				type="number"
+				value={localSet.getCount()}
+				onChange={(event: React.ChangeEvent<HTMLInputElement>) => {updateCount(+event.target.value)}}
+				label="Dice Count"
+			/>
+		</Grid>
+		<Grid item xs={12} md={6}>
+			<DieComponent die={localSet.getDieType()} updateDie={(die) => updateDie(die)} />
+		</Grid>
+		<Grid item xs={12} md={3}>
+			{
+				localSet.getReducer()
+					? <>
+						<TextField
+							inputProps={{
+								"data-testid": "diceSetComponent-reducerTypeInput"
+							}}
+							data-testid="diceSetComponent-reducerType"
+							select
+							fullWidth
+							onChange={(event) => changeReducerType(+event.target.value)}
+							defaultValue={reducerType.KEEP}
+						>
+							<MenuItem data-testid="diceSetComponent-reducerTypeKeep" value={reducerType.KEEP}>Keep</MenuItem>
+							<MenuItem value={reducerType.DISCARD}>Discard</MenuItem>
+						</TextField>
+						<TextField
+							inputProps={{
+								"data-testid": "diceSetComponent-reducerVar"
+							}}
+							type="number"
+							value={localSet.getReducer()?.getVariable()}
+							onChange={(event) => {updateReducerVariable(+event.target.value)}}
+						/>
+						Highest Rolls
+						<Button data-testid="diceSetComponent-removeReducer" onClick={() => {updateReducer(undefined)}}>Remove reducer</Button>
+					</>
+					: <Button data-testid="diceSetComponent-addReducer" onClick={() => {changeReducerType(reducerType.KEEP)}}>Add reducer</Button>
+			}
+		</Grid>
 		<br/>
-	</>);
+	</Grid>);
 };

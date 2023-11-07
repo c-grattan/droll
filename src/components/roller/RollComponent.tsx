@@ -3,6 +3,7 @@ import { DiceSet } from "../../classes/rollClass/DiceSet";
 import { Die } from "../../classes/rollClass/Die";
 import { Roll } from "../../classes/rollClass/Roll";
 import { DiceSetComponent } from "./DiceSetComponent";
+import { Button, Stack } from "@mui/material";
 
 type RRProps = {
 	set: DiceSet,
@@ -11,10 +12,10 @@ type RRProps = {
 }
 
 const RollRow = ({set, removeSet, updateSet}: RRProps) => {
-	return (<>
-		<button data-testid="rollComponent-removeSet" onClick={removeSet}>X</button>
-		<DiceSetComponent diceSet={set} updateSet={(newSet) => updateSet(newSet)} />
-	</>);
+	return (<Stack direction="row">
+		<Button data-testid="rollComponent-removeSet" onClick={removeSet}>X</Button>
+		<DiceSetComponent diceSet={set} updateSet={updateSet} />
+	</Stack>);
 };
 
 type RCProps = {
@@ -49,11 +50,13 @@ export const RollComponent = ({roll, setRoll}: RCProps) => {
 	}
 
 	return (<>
-		{
-			localRoll.getSets().map((set: DiceSet, index: number) => {
-				return <RollRow key={index} set={set} removeSet={() => removeSet(index)} updateSet={(set) => updateSet(index, set)} />;
-			})
-		}
-		<button data-testid="rollComponent-addSet" onClick={addNewSet}>Add set</button>
+		<Button data-testid="rollComponent-addSet" onClick={addNewSet}>Add roll</Button>
+		<Stack spacing={1}>
+			{
+				localRoll.getSets().map((set: DiceSet, index: number) => {
+					return <RollRow key={index} set={set} removeSet={() => removeSet(index)} updateSet={(set) => updateSet(index, set)} />;
+				})
+			}
+		</Stack>
 	</>);
 }

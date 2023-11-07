@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { Roll } from "../../classes/rollClass/Roll";
 
 type RSProps = {
@@ -6,8 +7,8 @@ type RSProps = {
 
 export const RollSummary = ({roll}: RSProps) => {
 	return (<>
-		<p data-testid="rs-min">{roll.getMinimum()}</p>
-		<p data-testid="rs-avg">{roll.getAverage()}</p>
-		<p data-testid="rs-max">{roll.getMaximum()}</p>
+		<Typography data-testid="rs-min">Minimum: {roll.getMinimum()}</Typography>
+		<Typography data-testid="rs-avg">Mean: {roll.getAverage()}</Typography>
+		<Typography data-testid="rs-max">Maximum: {roll.getMaximum()}</Typography>
 	</>);
 };

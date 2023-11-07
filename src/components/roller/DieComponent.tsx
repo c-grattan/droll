@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Die } from "../../classes/rollClass/Die"
+import { Grid, TextField } from "@mui/material";
 
 type DCProps = {
 	die: Die,
@@ -30,8 +31,30 @@ export const DieComponent = ({die, updateDie}: DCProps) => {
 		refreshDie();
 	}
 
-	return (<>
-		d<input type="number" data-testid="dieComponent-sides" value={localDie.getSides()} onChange={(event: React.ChangeEvent<HTMLInputElement>) => {updateSides(+event.target.value)}}/>
-		+<input type="number" data-testid="dieComponent-modifier" value={localDie.getModifier()} onChange={(event: React.ChangeEvent<HTMLInputElement>) => {updateModifier(+event.target.value)}}/>
-	</>);
+	return (<Grid container>
+		<Grid item xs={12} md={6}>
+			<TextField
+				inputProps={{
+					"data-testid": "dieComponent-sides"
+				}}
+				type="number"
+				value={localDie.getSides()}
+				onChange={(event: React.ChangeEvent<HTMLInputElement>) => {updateSides(+event.target.value)}}
+				label="Die Sides"
+			/>
+		</Grid>
+		<Grid item xs={12} md={6}>
+			<TextField
+				inputProps={{
+					"data-testid": "dieComponent-modifier"
+				}}
+				type="number"
+				value={localDie.getModifier()}
+				onChange={(event: React.ChangeEvent<HTMLInputElement>) => {updateModifier(+event.target.value)}}
+				label="Modifier"
+			/>
+		</Grid>
+		
+		
+	</Grid>);
 }
