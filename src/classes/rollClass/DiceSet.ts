@@ -1,6 +1,35 @@
 import { Die } from "./Die"
 import { DiceSetReducer } from "./setReducer/DiceSetReducer";
 
+export function generatePermutationsFor(count: number, sides: number): number[][] {
+	if(count === 1) {
+		let permutations: number[][] = [];
+		for(let i = 1; i <= sides; i++) {
+			permutations.push([i]);
+		}
+		return permutations;
+	} else if(count > 1) {
+		const nextPermutations: number[][] = generatePermutationsFor(count - 1, sides);
+		let permutations: number[][] = [];
+		for(let i = 1; i <= sides; i++) {
+			nextPermutations.forEach((value) => {
+				permutations.push([i].concat(value));
+			});
+		}
+		return permutations;
+	}
+	return [];
+}
+
+export function hardCalculateAverage(count: number, dieType: Die, reducer: DiceSetReducer): number {
+	let permutations: number[][] = generatePermutationsFor(count, dieType.getSides());
+	let total = 0;
+	permutations.forEach((permutation: number[], index) => {
+		total += reducer.reduce(permutation);
+	});
+	return total / permutations.length;
+}
+
 export class DiceSet {
 	private count: number = 0;
 	private dieType: Die = new Die(0, 0);
@@ -61,7 +90,11 @@ export class DiceSet {
 	}
 
 	public getAverage(): number {
-		return this.getStatsFor(this.dieType.getAverage());
+		if(this.reducer) {
+			return hardCalculateAverage(this.count, this.dieType, this.reducer);
+		} else {
+			return this.getStatsFor(this.dieType.getAverage());
+		}
 	}
 
 	public getMaximum(): number {

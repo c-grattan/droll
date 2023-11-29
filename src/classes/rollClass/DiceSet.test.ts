@@ -1,6 +1,12 @@
-import { DiceSet } from "./DiceSet";
+import { DiceSet, hardCalculateAverage } from "./DiceSet";
 import { Die } from "./Die";
 import { KeepXHighest } from "./setReducer/KeepXHighest";
+
+it('Correctly calculates the hard average', () => {
+	const d20 = new Die(20);
+	const withAdvantage = new KeepXHighest(1);
+	expect(hardCalculateAverage(2, d20, withAdvantage)).toEqual(13.825);
+});
 
 describe('Gets correct', () => {
 	const d = new Die(6, 1);

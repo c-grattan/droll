@@ -15,7 +15,7 @@ export class KeepXHighest implements DiceSetReducer {
 	}
 
 	reduce(results: number[]): number {
-		const sorted = results.sort();
+		const sorted = results.sort((a, b) => a - b);
 		let total = 0;
 		for(let i = 0; i < this.x; i++) {
 			total += sorted.pop() || 0;
