@@ -1,12 +1,25 @@
-import { DiceSet, hardCalculateAverage } from "./DiceSet";
+import { DiceSet, generatePermutationsFor, hardCalculateAverage } from "./DiceSet";
 import { Die } from "./Die";
 import { KeepXHighest } from "./setReducer/KeepXHighest";
 
-it('Correctly calculates the hard average', () => {
-	const d20 = new Die(20);
-	const withAdvantage = new KeepXHighest(1);
-	expect(hardCalculateAverage(2, d20, withAdvantage)).toEqual(13.825);
-});
+
+describe('Hard average calculation', () => {
+	it('Correctly calculates the hard average', () => {
+		const d20 = new Die(20);
+		const withAdvantage = new KeepXHighest(1);
+		expect(hardCalculateAverage(2, d20, withAdvantage)).toEqual(13.825);
+	});
+
+	it('Handles negative die side value', () => {
+		const testDie = new Die(-1);
+		const withAdvantage = new KeepXHighest(1);
+		expect(hardCalculateAverage(2, testDie, withAdvantage)).toEqual(0);
+	});
+
+	test('Permutation generation handles value less than 1', () => {
+		expect(generatePermutationsFor(-1, 1)).toHaveLength(0);
+	});
+})
 
 describe('Gets correct', () => {
 	const d = new Die(6, 1);

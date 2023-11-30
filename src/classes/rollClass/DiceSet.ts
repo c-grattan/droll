@@ -27,7 +27,12 @@ export function hardCalculateAverage(count: number, dieType: Die, reducer: DiceS
 	permutations.forEach((permutation: number[], index) => {
 		total += reducer.reduce(permutation);
 	});
-	return total / permutations.length;
+	const noOfPermutations = permutations.length;
+	if(noOfPermutations > 1) {
+		return total / permutations.length;
+	} else {
+		return total;
+	}
 }
 
 export class DiceSet {
