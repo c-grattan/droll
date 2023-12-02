@@ -6,13 +6,24 @@ import '@fontsource/roboto/700.css';
 import { Roller } from './components/roller/Roller';
 import { RollManager } from './classes/rollManager/RollManager';
 import { Container } from '@mui/material';
+import { Navigation } from './components/navbar/Navigation';
+import { RollManagerComponent } from './components/rollmanagercomponent/RollManagerComponent';
 
 function App() {
 	const rollManager = new RollManager();
 
 	return (<>
 		<Container maxWidth='lg'>
-			<Roller rollManager={rollManager} />
+			<Navigation navData={[
+				{
+					title: "Roller",
+					content: <Roller rollManager={rollManager} />
+				},
+				{
+					title: "Roll Manager",
+					content: <RollManagerComponent />
+				}
+			]} />
 		</Container>
 	</>);
 }
