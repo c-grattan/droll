@@ -21,7 +21,7 @@ function App() {
 				},
 				{
 					title: "Roll Manager",
-					content: <RollManagerComponent />
+					content: <RollManagerComponent rollManager={rollManager} />
 				}
 			]} />
 		</Container>
