@@ -1,5 +1,6 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid"
 import { RollManager, RollStorageObject } from "../../classes/rollManager/RollManager";
+import { Button } from "@mui/material";
 
 type RMCProps = {
 	rollManager: RollManager
@@ -46,5 +47,6 @@ export const RollManagerComponent = ({rollManager}: RMCProps) => {
 			rows={rows}
 			pagination={true}
 		/>
+		<Button download="Droll.json" href={"data:text/json," + encodeURIComponent(JSON.stringify(rollManager.rolls))} disabled={rollManager.rolls.length == 0}>Export</Button>
 	</>;
 }
