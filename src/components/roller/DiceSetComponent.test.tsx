@@ -2,8 +2,6 @@ import { fireEvent, getByRole, render, screen, within } from "@testing-library/r
 import { DiceSet } from "../../classes/rollClass/DiceSet";
 import { Die } from "../../classes/rollClass/Die";
 import { DiceSetComponent, reducerType } from "./DiceSetComponent";
-import { KeepXHighest } from "../../classes/rollClass/setReducer/KeepXHighest";
-import { DiscardXHighest } from "../../classes/rollClass/setReducer/DiscardXHighest";
 import { Roller } from "./Roller";
 import { RollManager } from "../../classes/rollManager/RollManager";
 

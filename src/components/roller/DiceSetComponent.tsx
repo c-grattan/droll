@@ -1,8 +1,6 @@
 import { DiceSet } from "../../classes/rollClass/DiceSet";
 import { DieComponent } from "./DieComponent";
 import { DiceSetReducer } from "../../classes/rollClass/setReducer/DiceSetReducer";
-import { KeepXHighest } from "../../classes/rollClass/setReducer/KeepXHighest";
-import { DiscardXHighest } from "../../classes/rollClass/setReducer/DiscardXHighest";
 import { Die } from "../../classes/rollClass/Die";
 import { useState } from "react";
 import { Button, Grid, MenuItem, TextField } from "@mui/material";
@@ -57,10 +55,10 @@ export const DiceSetComponent = ({diceSet, updateSet}: DSCProps) => {
 	function changeReducerType(type: reducerType) {
 		switch(type) {
 			case reducerType.KEEP:
-				updateReducer(new KeepXHighest(1));
+				updateReducer(new DiceSetReducer(1, true));
 				break;
 			case reducerType.DISCARD:
-				updateReducer(new DiscardXHighest(1));
+				updateReducer(new DiceSetReducer(1, false));
 				break;
 		}
 	}

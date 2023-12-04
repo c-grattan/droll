@@ -43,9 +43,9 @@ export const Roller = ({rollManager}: RProps) => {
 					})}
 				>
 					<span>Name:</span>
-					<Input data-testid="roller-saveName" value={saveName} onChange={(event) => {setSaveName(event.target.value)}} />
+					<Input inputProps={{'data-testid':"roller-saveName"}} value={saveName} onChange={(event) => {setSaveName(event.target.value)}} />
 					<br/><span>Category:</span>
-					<Input data-testid="roller-saveCategory" value={saveCategory} onChange={(event) => {setSaveCategory(event.target.value)}} />
+					<Input inputProps={{'data-testid':"roller-saveCategory"}} value={saveCategory} onChange={(event) => {setSaveCategory(event.target.value)}} />
 				</ConfirmDialogButton>
 
 				<Button data-testid="roller-testRoll" onClick={() => setRollResult(roll.roll())}>Roll</Button>
