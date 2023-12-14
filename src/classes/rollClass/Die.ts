@@ -1,6 +1,6 @@
 export class Die {
-	private sides: number = 1;
-	private modifier: number = 0;
+	public sides: number = 1;
+	public modifier: number = 0;
 
 	private minimum: number = 0;
 	private average: number = 0;

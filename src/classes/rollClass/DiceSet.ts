@@ -36,9 +36,9 @@ export function hardCalculateAverage(count: number, dieType: Die, reducer: DiceS
 }
 
 export class DiceSet {
-	private count: number = 0;
-	private dieType: Die = new Die(0, 0);
-	private reducer: DiceSetReducer | undefined = undefined;
+	public count: number = 0;
+	public dieType: Die = new Die(0, 0);
+	public reducer: DiceSetReducer | undefined = undefined;
 
 	constructor(count: number, dieType: Die) {
 		this.count = count;

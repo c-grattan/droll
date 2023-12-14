@@ -4,7 +4,7 @@ import { RollManager } from "../../classes/rollManager/RollManager";
 import { ConfirmDialogButton } from "../confirmdialogbutton/ConfirmDialogButton";
 import { RollComponent } from "./RollComponent";
 import { RollSummary } from "../rollsummary/RollSummary";
-import { Button, Divider, Grid, Input, Typography } from "@mui/material";
+import { Button, Divider, Grid, Input, TextField, Typography } from "@mui/material";
 
 type RProps = {
 	rollManager: RollManager
@@ -43,9 +43,9 @@ export const Roller = ({rollManager}: RProps) => {
 					})}
 				>
 					<span>Name:</span>
-					<Input inputProps={{'data-testid':"roller-saveName"}} value={saveName} onChange={(event) => {setSaveName(event.target.value)}} />
+					<TextField inputProps={{'data-testid':"roller-saveName"}} value={saveName} onChange={(event) => {setSaveName(event.target.value)}} />
 					<br/><span>Category:</span>
-					<Input inputProps={{'data-testid':"roller-saveCategory"}} value={saveCategory} onChange={(event) => {setSaveCategory(event.target.value)}} />
+					<TextField inputProps={{'data-testid':"roller-saveCategory"}} value={saveCategory} onChange={(event) => {setSaveCategory(event.target.value)}} />
 				</ConfirmDialogButton>
 
 				<Button data-testid="roller-testRoll" onClick={() => setRollResult(roll.roll())}>Roll</Button>
