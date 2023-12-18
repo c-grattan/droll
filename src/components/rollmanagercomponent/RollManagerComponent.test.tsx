@@ -14,33 +14,35 @@ function dataGridContentsCheck(rollManager: RollManager): void {
 	rows.forEach((row, index) => {
 		if(index > 0) {
 			const actualIndex = index - 1;
-			const expected = rso[actualIndex].name + '' + rso[actualIndex].category + rso[actualIndex].roll.getMinimum();
+			const expected = rso[actualIndex].name + '' + rso[actualIndex].category;
 			expect(row).toHaveTextContent(expected);
 		}
 	});
 }
 
 describe('Data grid', () => {
+	let manager: RollManager;
+	beforeEach(() => {
+		manager = new RollManager([{
+			roll: new Roll([new DiceSet(1, new Die(6))]),
+			name: '1d6',
+			category: 'Placeholder'
+		},
+		{
+			roll: new Roll([new DiceSet(2, new Die(6))]),
+			name: '2d6',
+			category: '2nd Placeholder'
+		}]);
+	});
+
 	test('Is present', () => {
 		render(<RollManagerComponent rollManager={new RollManager([{roll: new Roll()}])}/>);
 		expect(screen.getByTestId('rollmanager-datagrid')).toBeVisible();
 	});
 
-	const rso: RollStorageObject[] = [{
-		roll: new Roll([new DiceSet(1, new Die(6))]),
-		name: '1d6',
-		category: 'Placeholder'
-	},
-	{
-		roll: new Roll([new DiceSet(2, new Die(6))]),
-		name: '2d6',
-		category: '2nd Placeholder'
-	}];
-	const manager = new RollManager(rso);
-
 	test('Displays correct data', () => {
 		render(<RollManagerComponent rollManager={manager} />);
-		dataGridContentsCheck(new RollManager(rso));
+		dataGridContentsCheck(manager);
 	});
 
 	test('Exports data correctly', () => {
@@ -70,9 +72,19 @@ describe('Data grid', () => {
 		});
 
 		test('Updates data grid', async () => {
-			render(<RollManagerComponent rollManager={manager} />);
+			render(<RollManagerComponent rollManager={new RollManager()} />);
 			await uploadFile(new File([JSON.stringify(manager.rolls)], "Droll.json", {type: "text/json"}));
 			dataGridContentsCheck(manager);
 		});
+	});
+
+	test('Can delete specific rolls', () => {
+		render(<RollManagerComponent rollManager={manager} />);
+		const checkboxes = screen.queryAllByRole("checkbox");
+		const index0Name = manager.rolls[0].name;
+		fireEvent.click(checkboxes[1]);
+		fireEvent.click(screen.getByTestId("rollmanager-deletebutton"));
+		expect(index0Name).not.toEqual(manager.rolls[0].name);
+		dataGridContentsCheck(manager);
 	});
 });

@@ -1,4 +1,4 @@
-import { DataGrid, GridColDef } from "@mui/x-data-grid"
+import { DataGrid, GridColDef, GridRowId } from "@mui/x-data-grid"
 import { RollManager, RollStorageObject } from "../../classes/rollManager/RollManager";
 import { Button, TextField, Typography } from "@mui/material";
 import { useState } from "react";
@@ -11,6 +11,7 @@ export const RollManagerComponent = ({rollManager}: RMCProps) => {
 	const rollsAvailable: boolean = rollManager.rolls.length > 0;
 	const [uploadMessage, setUploadMessage] = useState('');
 	const [displayData, setDisplayData] = useState(rollManager.rolls);
+	const [selectedRolls, setSelectedRolls] = useState<GridRowId[]>([]);
 
 	const columns: GridColDef[] = [
 		{
@@ -71,9 +72,26 @@ export const RollManagerComponent = ({rollManager}: RMCProps) => {
 		}
 	}
 
+	function deleteSelected() {
+		let newRolls: RollStorageObject[] = [];
+		rollManager.rolls.forEach((value, index) => {
+			if(!selectedRolls.includes(index)) {
+				newRolls.push(value);
+			}
+		});
+		rollManager.rolls = newRolls;
+		setDisplayData(newRolls);
+		setSelectedRolls([]);
+	}
+
 	return <>
 		{
 			rollsAvailable && <DataGrid
+				checkboxSelection
+				rowSelectionModel={selectedRolls}
+				onRowSelectionModelChange={(selected) => {
+					setSelectedRolls(selected);
+				}}
 				data-testid="rollmanager-datagrid"
 				columns={columns}
 				rows={rows}
@@ -97,6 +115,13 @@ export const RollManagerComponent = ({rollManager}: RMCProps) => {
 			disabled={!rollsAvailable}
 		>
 				Export
+		</Button>
+		<Button
+			data-testid="rollmanager-deletebutton"
+			onClick={() => deleteSelected()}
+			disabled={selectedRolls.length < 1}
+			>
+				Delete
 		</Button>
 	</>;
 }
