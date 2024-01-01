@@ -4,19 +4,44 @@ import { RollManager } from "../../classes/rollManager/RollManager";
 import { ConfirmDialogButton } from "../confirmdialogbutton/ConfirmDialogButton";
 import { RollComponent } from "./RollComponent";
 import { RollSummary } from "../rollsummary/RollSummary";
-import { Button, Divider, Grid, Input, TextField, Typography } from "@mui/material";
+import { Button, Divider, Grid, TextField, Typography } from "@mui/material";
 
 type RProps = {
 	rollManager: RollManager
 }
 
 export const Roller = ({rollManager}: RProps) => {
-	const [saveName, setSaveName] = useState('');
-	const [saveCategory, setSaveCategory] = useState('');
+	const noSelection: boolean = rollManager.getSelected() < 0;
+	const [saveName, setSaveName] = useState(noSelection ? '' : rollManager.rolls[rollManager.getSelected()].name);
+	const [saveCategory, setSaveCategory] = useState(noSelection ? '' : rollManager.rolls[rollManager.getSelected()].category);
 
-	const [roll, setRoll] = useState(new Roll());
+	const [roll, setRoll] = useState(noSelection ? new Roll() : rollManager.rolls[rollManager.getSelected()].roll);
 
 	const [rollResult, setRollResult] = useState(0);
+
+	function saveRoll() {
+		let index: number = -1;
+		for(let i = 0; i < rollManager.getNames().length; i++) {
+			const name = rollManager.getNames()[i];
+			if(saveName === name) {
+				index = i;
+				break;
+			}
+		}
+
+		if(index < 0) {
+			rollManager.addRoll(roll, {
+				rollName: saveName,
+				category: saveCategory
+			});
+		} else {
+			rollManager.rolls[index] = {
+				roll: roll,
+				name: saveName,
+				category: saveCategory
+			};
+		}
+	}
 
 	return (<>
 		<Grid container spacing={1}>
@@ -37,10 +62,7 @@ export const Roller = ({rollManager}: RProps) => {
 				<ConfirmDialogButton
 					buttonText="Save"
 					data-testid="roller-openSave"
-					onSubmit={() => rollManager.addRoll(roll, {
-						rollName: saveName,
-						category: saveCategory
-					})}
+					onSubmit={() => saveRoll()}
 				>
 					<span>Name:</span>
 					<TextField inputProps={{'data-testid':"roller-saveName"}} value={saveName} onChange={(event) => {setSaveName(event.target.value)}} />

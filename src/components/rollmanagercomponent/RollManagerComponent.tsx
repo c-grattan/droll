@@ -1,13 +1,15 @@
 import { DataGrid, GridColDef, GridRowId } from "@mui/x-data-grid"
 import { RollManager, RollStorageObject } from "../../classes/rollManager/RollManager";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, IconButton, TextField, Typography } from "@mui/material";
 import { useState } from "react";
+import EditIcon from '@mui/icons-material/Edit';
 
 type RMCProps = {
-	rollManager: RollManager
+	rollManager: RollManager,
+	changeTab: (tab: number) => void
 }
 
-export const RollManagerComponent = ({rollManager}: RMCProps) => {
+export const RollManagerComponent = ({rollManager, changeTab}: RMCProps) => {
 	const rollsAvailable: boolean = rollManager.rolls.length > 0;
 	const [uploadMessage, setUploadMessage] = useState('');
 	const [displayData, setDisplayData] = useState(rollManager.rolls);
@@ -33,6 +35,21 @@ export const RollManagerComponent = ({rollManager}: RMCProps) => {
 		{
 			field: 'max',
 			headerName: 'Maximum'
+		},
+		{
+			field: 'actions',
+			headerName: 'Actions',
+			renderCell: (params) => <>
+				<IconButton
+					data-testid={"rollmanager-loadRow" + params.rowNode.id}
+					onClick={() => {
+						rollManager.setSelected(Number.parseInt(params.rowNode.id.toString()));
+						changeTab(0);
+					}}
+				>
+					<EditIcon />
+				</IconButton>
+			</>
 		}
 	];
 
@@ -88,6 +105,7 @@ export const RollManagerComponent = ({rollManager}: RMCProps) => {
 		{
 			rollsAvailable && <DataGrid
 				checkboxSelection
+				disableVirtualization
 				rowSelectionModel={selectedRolls}
 				onRowSelectionModelChange={(selected) => {
 					setSelectedRolls(selected);
@@ -97,7 +115,7 @@ export const RollManagerComponent = ({rollManager}: RMCProps) => {
 				rows={rows}
 			/>
 		}
-		
+		{/* <p data-testid="rollmanager-loadRow0">Load row</p> */}
 		<Typography variant="body1">Import:</Typography>
 		<TextField
 			type="file"

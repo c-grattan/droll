@@ -8,20 +8,28 @@ import { RollManager } from './classes/rollManager/RollManager';
 import { Container } from '@mui/material';
 import { Navigation } from './components/navbar/Navigation';
 import { RollManagerComponent } from './components/rollmanagercomponent/RollManagerComponent';
+import { useState } from 'react';
 
 function App() {
-	const rollManager = new RollManager();
+	const [rollManager] = useState(new RollManager());
+	const [currentTab, setCurrentTab] = useState(0);
 
 	return (<>
 		<Container maxWidth='lg'>
-			<Navigation navData={[
+			<Navigation
+				currentTab={currentTab}
+				setCurrentTab={(tab) => {
+					setCurrentTab(tab);
+					console.log(rollManager.rolls);
+				}}
+				navData={[
 				{
 					title: "Roller",
 					content: <Roller rollManager={rollManager} />
 				},
 				{
 					title: "Roll Manager",
-					content: <RollManagerComponent rollManager={rollManager} />
+					content: <RollManagerComponent rollManager={rollManager} changeTab={(tab) => setCurrentTab(tab)} />
 				}
 			]} />
 		</Container>

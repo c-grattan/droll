@@ -1,5 +1,4 @@
 import { AppBar, Button, Toolbar } from "@mui/material"
-import { useState } from "react"
 
 type TabData = {
 	title: string,
@@ -7,11 +6,12 @@ type TabData = {
 }
 
 type NavProps = {
-	navData: TabData[]
+	navData: TabData[],
+	currentTab: number,
+	setCurrentTab: (tab: number) => void
 }
 
-export const Navigation = ({navData}: NavProps) => {
-	const [currentTab, setCurrentTab] = useState(0);
+export const Navigation = ({navData, currentTab, setCurrentTab}: NavProps) => {
 	return <>
 		<AppBar>
 			<Toolbar>

@@ -36,17 +36,17 @@ describe('Data grid', () => {
 	});
 
 	test('Is present', () => {
-		render(<RollManagerComponent rollManager={new RollManager([{roll: new Roll()}])}/>);
+		render(<RollManagerComponent rollManager={new RollManager([{roll: new Roll()}])} changeTab={() => {}}/>);
 		expect(screen.getByTestId('rollmanager-datagrid')).toBeVisible();
 	});
 
 	test('Displays correct data', () => {
-		render(<RollManagerComponent rollManager={manager} />);
+		render(<RollManagerComponent rollManager={manager} changeTab={() => {}} />);
 		dataGridContentsCheck(manager);
 	});
 
 	test('Exports data correctly', () => {
-		render(<RollManagerComponent rollManager={manager} />);
+		render(<RollManagerComponent rollManager={manager} changeTab={() => {}} />);
 		const downloadButton = screen.getByTestId("rollmanager-downloadbutton");
 		expect(downloadButton).toHaveAttribute("download");
 		expect(downloadButton).toHaveAttribute("href", "data:text/json," + encodeURIComponent(JSON.stringify(manager.rolls)))
@@ -66,25 +66,52 @@ describe('Data grid', () => {
 		}
 
 		test('Validates input', async () => {
-			render(<RollManagerComponent rollManager={manager} />);
+			render(<RollManagerComponent rollManager={manager} changeTab={() => {}} />);
 			await uploadFile(new File(["Badly formatted droll file"], "Droll.json", {type: "text/json"}));
 			expect(screen.queryByTestId("rollmanager-uploadmessage")).toHaveTextContent("Error parsing input: ");
 		});
 
 		test('Updates data grid', async () => {
-			render(<RollManagerComponent rollManager={new RollManager()} />);
+			render(<RollManagerComponent rollManager={new RollManager()} changeTab={() => {}} />);
 			await uploadFile(new File([JSON.stringify(manager.rolls)], "Droll.json", {type: "text/json"}));
 			dataGridContentsCheck(manager);
 		});
 	});
 
 	test('Can delete specific rolls', () => {
-		render(<RollManagerComponent rollManager={manager} />);
+		render(<RollManagerComponent rollManager={manager} changeTab={() => {}} />);
 		const checkboxes = screen.queryAllByRole("checkbox");
 		const index0Name = manager.rolls[0].name;
 		fireEvent.click(checkboxes[1]);
 		fireEvent.click(screen.getByTestId("rollmanager-deletebutton"));
 		expect(index0Name).not.toEqual(manager.rolls[0].name);
 		dataGridContentsCheck(manager);
+	});
+
+	describe("Edit Button", () => {
+		let changeTab = jest.fn();
+		let icons: any[];
+		beforeEach(() => {
+			render(<RollManagerComponent rollManager={manager} changeTab={changeTab} />);
+			icons = screen.queryAllByTestId("EditIcon");
+		});
+
+		test("Renders", async () => {
+			icons.forEach((icon) => {
+				expect(icon).toBeVisible();
+			});
+		});
+
+		test("Switches tab", () => {
+			expect(changeTab).not.toBeCalled();
+			fireEvent.click(icons[0]);
+			expect(changeTab).toBeCalled();
+		});
+
+		test("Changes selected roll", () => {
+			expect(manager.getSelected()).toBeLessThan(0);
+			fireEvent.click(icons[1]);
+			expect(manager.getSelected()).toEqual(1);
+		});
 	});
 });

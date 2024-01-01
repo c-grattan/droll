@@ -10,6 +10,7 @@ export type RollStorageObject = {
 
 export class RollManager {
 	public rolls: RollStorageObject[];
+	private selected: number = -1;
 
 	constructor(rso?: RollStorageObject[]) {
 		this.rolls = rso ? rso : [];
@@ -62,5 +63,13 @@ export class RollManager {
 		return [...new Set(this.rolls.map((rso: RollStorageObject) => {
 			return rso.category || '';
 		}))];
+	}
+
+	public getSelected(): number {
+		return this.selected;
+	}
+
+	public setSelected(selected: number) {
+		this.selected = selected;
 	}
 };
