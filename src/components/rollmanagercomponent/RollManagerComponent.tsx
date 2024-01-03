@@ -127,7 +127,7 @@ export const RollManagerComponent = ({rollManager, changeTab}: RMCProps) => {
 		}
 		<Typography variant="body1">Import:</Typography>
 		<ConfirmDialogButton
-			disabled={uploadedRolls.length === 0}
+			submitDisabled={uploadedRolls.length === 0}
 			onSubmit={() => updateNewRolls()}
 		>
 			<TextField
@@ -155,12 +155,12 @@ export const RollManagerComponent = ({rollManager, changeTab}: RMCProps) => {
 		>
 				Export
 		</Button>
-		<Button
-			data-testid="rollmanager-deletebutton"
-			onClick={() => deleteSelected()}
-			disabled={selectedRolls.length < 1}
-			>
-				Delete
-		</Button>
+		<ConfirmDialogButton
+			openDisabled={selectedRolls.length < 1}
+			onSubmit={() => deleteSelected()}
+			buttonText="Delete"
+		>
+			<p>Are you sure you want to delete {selectedRolls.length} rolls?</p>
+		</ConfirmDialogButton>
 	</>;
 }

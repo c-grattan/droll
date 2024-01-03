@@ -68,6 +68,7 @@ export const Roller = ({rollManager}: RProps) => {
 					<TextField inputProps={{'data-testid':"roller-saveName"}} value={saveName} onChange={(event) => {setSaveName(event.target.value)}} />
 					<br/><span>Category:</span>
 					<TextField inputProps={{'data-testid':"roller-saveCategory"}} value={saveCategory} onChange={(event) => {setSaveCategory(event.target.value)}} />
+					<>{saveName !== undefined && rollManager.getNames().includes(saveName) && <p>Warning! A roll already exists with that name, saving will overwrite the data.</p>}</>
 				</ConfirmDialogButton>
 
 				<Button data-testid="roller-testRoll" onClick={() => setRollResult(roll.roll())}>Roll</Button>

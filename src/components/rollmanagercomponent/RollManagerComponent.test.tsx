@@ -56,7 +56,7 @@ describe('Data grid', () => {
 		async function uploadFile(file: File, append: boolean = false) {
 			expect(screen.queryByTestId("rollmanager-uploadmessage")).toBeNull();
 
-			fireEvent.click(screen.getByTestId("cdb-open"));
+			fireEvent.click(screen.getAllByTestId("cdb-open")[0]);
 			const input = screen.getByTestId("rollmanager-uploadinput");
 			act(() => {
 				userEvent.upload(input, [file]);
@@ -112,7 +112,8 @@ describe('Data grid', () => {
 		const checkboxes = screen.queryAllByRole("checkbox");
 		const index0Name = manager.rolls[0].name;
 		fireEvent.click(checkboxes[1]);
-		fireEvent.click(screen.getByTestId("rollmanager-deletebutton"));
+		fireEvent.click(screen.getAllByTestId("cdb-open")[1]);
+		fireEvent.click(screen.getByTestId("cdb-submit"));
 		expect(index0Name).not.toEqual(manager.rolls[0].name);
 		dataGridContentsCheck(manager);
 	});
