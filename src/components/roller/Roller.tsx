@@ -46,6 +46,17 @@ export const Roller = ({rollManager}: RProps) => {
 	return (<>
 		<Grid container spacing={1}>
 			<Grid item xs={9}>
+				{!noSelection && <>
+					<p>Currently editing: {rollManager.rolls[rollManager.getSelected()].name}</p>
+					<Button
+						onClick={() => {
+							rollManager.setSelected(-1);
+							setRoll(new Roll());
+						}}
+					>
+						Reset to new roll
+					</Button><br/>
+				</>}
 				<RollComponent roll={roll} setRoll={(roll) => setRoll(roll)} />
 			</Grid>
 			<Grid item xs={1}>
@@ -65,7 +76,7 @@ export const Roller = ({rollManager}: RProps) => {
 					onSubmit={() => saveRoll()}
 				>
 					<span>Name:</span>
-					<TextField inputProps={{'data-testid':"roller-saveName"}} value={saveName} onChange={(event) => {setSaveName(event.target.value)}} />
+					<TextField inputProps={{'data-testid':"roller-saveName"}} disabled={!noSelection} value={saveName} onChange={(event) => {setSaveName(event.target.value)}} />
 					<br/><span>Category:</span>
 					<TextField inputProps={{'data-testid':"roller-saveCategory"}} value={saveCategory} onChange={(event) => {setSaveCategory(event.target.value)}} />
 					<>{saveName !== undefined && rollManager.getNames().includes(saveName) && <p>Warning! A roll already exists with that name, saving will overwrite the data.</p>}</>

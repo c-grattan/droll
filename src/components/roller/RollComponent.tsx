@@ -24,7 +24,7 @@ type RCProps = {
 }
 
 export const RollComponent = ({roll, setRoll}: RCProps) => {
-	const [localRoll, setLocalRoll] = useState(roll);
+	const [, setLocalRoll] = useState(roll);
 
 	function refreshRoll() {
 		setLocalRoll(new Roll(roll.getSets()));
@@ -53,7 +53,7 @@ export const RollComponent = ({roll, setRoll}: RCProps) => {
 		<Button data-testid="rollComponent-addSet" onClick={addNewSet}>Add roll</Button>
 		<Stack spacing={1}>
 			{
-				localRoll.getSets().map((set: DiceSet, index: number) => {
+				roll.getSets().map((set: DiceSet, index: number) => {
 					return <RollRow key={index} set={set} removeSet={() => removeSet(index)} updateSet={(set) => updateSet(index, set)} />;
 				})
 			}
