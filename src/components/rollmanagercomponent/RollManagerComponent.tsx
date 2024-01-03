@@ -3,6 +3,8 @@ import { RollManager, RollStorageObject } from "../../classes/rollManager/RollMa
 import { Button, IconButton, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import EditIcon from '@mui/icons-material/Edit';
+import { ConfirmDialogButton } from "../confirmdialogbutton/ConfirmDialogButton";
+import Checkbox from "@mui/material/Checkbox";
 
 type RMCProps = {
 	rollManager: RollManager,
@@ -14,6 +16,8 @@ export const RollManagerComponent = ({rollManager, changeTab}: RMCProps) => {
 	const [uploadMessage, setUploadMessage] = useState('');
 	const [displayData, setDisplayData] = useState(rollManager.rolls);
 	const [selectedRolls, setSelectedRolls] = useState<GridRowId[]>([]);
+	const [uploadedRolls, setUploadedRolls] = useState<RollStorageObject[]>([]);
+	const [append, setAppend] = useState(false);
 
 	const columns: GridColDef[] = [
 		{
@@ -75,9 +79,8 @@ export const RollManagerComponent = ({rollManager, changeTab}: RMCProps) => {
 				if(typeof(result) == "string") {
 					try {
 						const newRolls: RollStorageObject[] = JSON.parse(result);
-						rollManager.parseNewRolls(newRolls);
-						setDisplayData(rollManager.rolls);
-						setUploadMessage("Loaded Droll file");
+						setUploadedRolls(newRolls);
+						
 					} catch(e: any) {
 						setUploadMessage("Error parsing input: " + (e as Error).message);
 					}
@@ -87,6 +90,13 @@ export const RollManagerComponent = ({rollManager, changeTab}: RMCProps) => {
 			
 			reader.readAsText(file);
 		}
+	}
+
+	function updateNewRolls(): void {
+		rollManager.parseNewRolls(uploadedRolls, append);
+		setDisplayData(rollManager.rolls);
+		setUploadMessage("Loaded Droll file");
+		setUploadedRolls([]);
 	}
 
 	function deleteSelected() {
@@ -115,16 +125,27 @@ export const RollManagerComponent = ({rollManager, changeTab}: RMCProps) => {
 				rows={rows}
 			/>
 		}
-		{/* <p data-testid="rollmanager-loadRow0">Load row</p> */}
 		<Typography variant="body1">Import:</Typography>
-		<TextField
-			type="file"
-			inputProps={{
-				accept: '.json',
-				'data-testid': 'rollmanager-uploadinput'
-			}}
-			onChange={(event) => load(event)}
-		/>
+		<ConfirmDialogButton
+			disabled={uploadedRolls.length === 0}
+			onSubmit={() => updateNewRolls()}
+		>
+			<TextField
+				type="file"
+				inputProps={{
+					accept: '.json',
+					'data-testid': 'rollmanager-uploadinput'
+				}}
+				onChange={(event) => load(event)}
+			/>
+			<p>Append data instead of overwriting?</p>
+			<Checkbox
+				inputProps={{'aria-label': 'Toggle append checkbox'}}
+				checked={append}
+				onChange={(event) => {setAppend(event.target.checked)}}
+			/>
+		</ConfirmDialogButton>
+		
 		{uploadMessage !== "" && <p data-testid="rollmanager-uploadmessage">{uploadMessage}</p>}
 		<Button
 			data-testid="rollmanager-downloadbutton"

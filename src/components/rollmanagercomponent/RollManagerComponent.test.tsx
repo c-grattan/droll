@@ -53,14 +53,23 @@ describe('Data grid', () => {
 	});
 
 	describe('Loads data correctly', () => {
-		async function uploadFile(file: File) {
+		async function uploadFile(file: File, append: boolean = false) {
 			expect(screen.queryByTestId("rollmanager-uploadmessage")).toBeNull();
 
+			fireEvent.click(screen.getByTestId("cdb-open"));
 			const input = screen.getByTestId("rollmanager-uploadinput");
 			act(() => {
 				userEvent.upload(input, [file]);
 			});
+
+			if(append) {
+				const toggle = screen.getByLabelText("Toggle append checkbox");
+				fireEvent.click(toggle);
+				expect(toggle).toBeChecked();
+			}
+
 			await waitFor(() => {
+				fireEvent.click(screen.getByTestId("cdb-submit"));
 				expect(screen.queryByTestId("rollmanager-uploadmessage")).not.toBeNull();
 			});
 		}
@@ -75,6 +84,26 @@ describe('Data grid', () => {
 			render(<RollManagerComponent rollManager={new RollManager()} changeTab={() => {}} />);
 			await uploadFile(new File([JSON.stringify(manager.rolls)], "Droll.json", {type: "text/json"}));
 			dataGridContentsCheck(manager);
+		});
+
+		test('Can append data instead of overwriting', async () => {
+			const appendedManager: RollManager = new RollManager([{
+				roll: new Roll([new DiceSet(1, new Die(6))]),
+				name: 'Append #1',
+				category: 'Appended Placeholder #1'
+			},
+			{
+				roll: new Roll([new DiceSet(2, new Die(6))]),
+				name: 'Append #2',
+				category: '2nd Appended Placeholder'
+			}]);
+
+			const startingLength: number = appendedManager.rolls.length;
+
+			render(<RollManagerComponent rollManager={appendedManager} changeTab={() => {}} />);
+			await uploadFile(new File([JSON.stringify(manager.rolls)], "Droll.json", {type: "text/json"}), true);
+
+			expect(appendedManager.rolls.length).toEqual(startingLength + manager.rolls.length);
 		});
 	});
 

@@ -34,7 +34,7 @@ export class RollManager {
 		});
 	}
 
-	public parseNewRolls(rso: RollStorageObject[]): void {
+	public parseNewRolls(rso: RollStorageObject[], append: boolean = false): void {
 		const newRolls: RollStorageObject[] = [];
 		rso.forEach((so: RollStorageObject) => {
 			let newRoll: Roll = new Roll();
@@ -50,7 +50,11 @@ export class RollManager {
 				category: so.category
 			});
 		});
-		this.rolls = newRolls;
+		if(append) {
+			this.rolls = this.rolls.concat(newRolls);
+		} else {
+			this.rolls = newRolls;
+		}
 	}
 
 	public getNames(): string[] {

@@ -19,8 +19,8 @@ function App() {
 			<Navigation
 				currentTab={currentTab}
 				setCurrentTab={(tab) => {
+					rollManager.setSelected(-1);
 					setCurrentTab(tab);
-					console.log(rollManager.rolls);
 				}}
 				navData={[
 				{

@@ -4,10 +4,11 @@ import { useState } from "react";
 type CDBProps = {
 	buttonText?: string,
 	onSubmit?: () => void,
-	children?: JSX.Element[] | JSX.Element
+	children?: JSX.Element[] | JSX.Element,
+	disabled?: boolean
 }
 
-export const ConfirmDialogButton = ({buttonText, onSubmit, children}: CDBProps) => {
+export const ConfirmDialogButton = ({buttonText, onSubmit, children, disabled}: CDBProps) => {
 	const [open, setOpen] = useState(false);
 
 	function handleClose(submit: boolean) {
@@ -24,7 +25,7 @@ export const ConfirmDialogButton = ({buttonText, onSubmit, children}: CDBProps) 
 			</DialogContent>
 			<DialogActions>
 				<Button data-testid="cdb-close" onClick={() => handleClose(false)}>Close</Button>
-				<Button data-testid="cdb-submit" onClick={() => handleClose(true)}>Submit</Button>
+				<Button data-testid="cdb-submit" onClick={() => handleClose(true)} disabled={disabled}>Submit</Button>
 			</DialogActions>
 		</Dialog>
 		<Button data-testid="cdb-open" onClick={() => setOpen(true)}>{buttonText ? buttonText : 'Open'}</Button>
