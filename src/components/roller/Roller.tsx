@@ -47,7 +47,7 @@ export const Roller = ({rollManager}: RProps) => {
 		<Grid container spacing={1}>
 			<Grid item xs={9}>
 				{!noSelection && <>
-					<p>Currently editing: {rollManager.rolls[rollManager.getSelected()].name}</p>
+					<Typography variant="body1">Currently editing: {rollManager.rolls[rollManager.getSelected()].name}</Typography>
 					<Button
 						onClick={() => {
 							rollManager.setSelected(-1);
@@ -56,7 +56,7 @@ export const Roller = ({rollManager}: RProps) => {
 						data-testid="roller-reset"
 					>
 						Reset to new roll
-					</Button><br/>
+					</Button>
 				</>}
 				<RollComponent roll={roll} setRoll={(roll) => setRoll(roll)} />
 			</Grid>
@@ -75,12 +75,24 @@ export const Roller = ({rollManager}: RProps) => {
 					buttonText="Save"
 					data-testid="roller-openSave"
 					onSubmit={() => saveRoll()}
+					submitDisabled={saveName === undefined || saveName.length === 0}
 				>
-					<span>Name:</span>
-					<TextField inputProps={{'data-testid':"roller-saveName"}} disabled={!noSelection} value={saveName} onChange={(event) => {setSaveName(event.target.value)}} />
-					<br/><span>Category:</span>
-					<TextField inputProps={{'data-testid':"roller-saveCategory"}} value={saveCategory} onChange={(event) => {setSaveCategory(event.target.value)}} />
-					<>{saveName !== undefined && rollManager.getNames().includes(saveName) && <p>Warning! A roll already exists with that name, saving will overwrite the data.</p>}</>
+					<TextField
+						inputProps={{'data-testid':"roller-saveName"}}
+						disabled={!noSelection}
+						value={saveName}
+						onChange={(event) => {setSaveName(event.target.value)}}
+						label="Name (Required)"
+						fullWidth
+					/>
+					<TextField
+						inputProps={{'data-testid':"roller-saveCategory"}}
+						value={saveCategory}
+						onChange={(event) => {setSaveCategory(event.target.value)}}
+						label="Category"
+						fullWidth
+					/>
+					<>{saveName !== undefined && rollManager.getNames().includes(saveName) && <Typography variant="body1">Warning! A roll already exists with that name, saving will overwrite it</Typography>}</>
 				</ConfirmDialogButton>
 
 				<Button data-testid="roller-testRoll" onClick={() => setRollResult(roll.roll())}>Roll</Button>

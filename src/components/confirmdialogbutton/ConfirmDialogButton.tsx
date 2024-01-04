@@ -20,7 +20,7 @@ export const ConfirmDialogButton = ({buttonText, onSubmit, children, submitDisab
 	}
 
 	return (<>
-		<Dialog open={open}>
+		<Dialog open={open} onClose={() => handleClose(false)}>
 			<DialogContent data-testid="cdb-content">
 				{children}
 			</DialogContent>

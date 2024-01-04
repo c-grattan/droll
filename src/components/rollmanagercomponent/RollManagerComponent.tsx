@@ -22,27 +22,33 @@ export const RollManagerComponent = ({rollManager, changeTab}: RMCProps) => {
 	const columns: GridColDef[] = [
 		{
 			field: 'name',
-			headerName: 'Name'
+			headerName: 'Name',
+			flex: 1
 		},
 		{
 			field: 'category',
-			headerName: 'Category'
+			headerName: 'Category',
+			flex: 1
 		},
 		{
 			field: 'min',
-			headerName: 'Minimum'
+			headerName: 'Minimum',
+			flex: 1
 		},
 		{
 			field: 'mean',
-			headerName: 'Mean'
+			headerName: 'Mean',
+			flex: 1
 		},
 		{
 			field: 'max',
-			headerName: 'Maximum'
+			headerName: 'Maximum',
+			flex: 1
 		},
 		{
 			field: 'actions',
 			headerName: 'Actions',
+			flex: 0.5,
 			renderCell: (params) => <>
 				<IconButton
 					data-testid={"rollmanager-loadRow" + params.rowNode.id}
@@ -95,7 +101,6 @@ export const RollManagerComponent = ({rollManager, changeTab}: RMCProps) => {
 	function updateNewRolls(): void {
 		rollManager.parseNewRolls(uploadedRolls, append);
 		setDisplayData(rollManager.rolls);
-		setUploadMessage("Loaded Droll file");
 		setUploadedRolls([]);
 	}
 
@@ -125,7 +130,6 @@ export const RollManagerComponent = ({rollManager, changeTab}: RMCProps) => {
 				rows={rows}
 			/>
 		}
-		<Typography variant="body1">Import:</Typography>
 		<ConfirmDialogButton
 			submitDisabled={uploadedRolls.length === 0}
 			onSubmit={() => updateNewRolls()}
@@ -138,12 +142,19 @@ export const RollManagerComponent = ({rollManager, changeTab}: RMCProps) => {
 				}}
 				onChange={(event) => load(event)}
 			/>
-			<p>Append data instead of overwriting?</p>
-			<Checkbox
-				inputProps={{'aria-label': 'Toggle append checkbox'}}
-				checked={append}
-				onChange={(event) => {setAppend(event.target.checked)}}
-			/>
+			<>
+				{
+					rollManager.rolls.length > 0 && <>
+						<Typography variant="body1">
+							Append data instead of overwriting?
+							<Checkbox
+								inputProps={{'aria-label': 'Toggle append checkbox'}}
+								checked={append}
+								onChange={(event) => {setAppend(event.target.checked)}}
+							/>
+						</Typography>
+				</>}
+			</>
 		</ConfirmDialogButton>
 		
 		{uploadMessage !== "" && <p data-testid="rollmanager-uploadmessage">{uploadMessage}</p>}
