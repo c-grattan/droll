@@ -1,3 +1,5 @@
+import { DiceSet } from "../rollClass/DiceSet";
+import { Die } from "../rollClass/Die";
 import { Roll } from "../rollClass/Roll";
 
 export type RollStorageObject = {
@@ -7,7 +9,12 @@ export type RollStorageObject = {
 };
 
 export class RollManager {
-	public rolls: RollStorageObject[] = [];
+	public rolls: RollStorageObject[];
+	private selected: number = -1;
+
+	constructor(rso?: RollStorageObject[]) {
+		this.rolls = rso ? rso : [];
+	}
 
 	public addRoll(roll: Roll, rollOptions?: {
 		rollName?: string,
@@ -27,6 +34,29 @@ export class RollManager {
 		});
 	}
 
+	public parseNewRolls(rso: RollStorageObject[], append: boolean = false): void {
+		const newRolls: RollStorageObject[] = [];
+		rso.forEach((so: RollStorageObject) => {
+			let newRoll: Roll = new Roll();
+
+			so.roll.sets.forEach((set: DiceSet) => {
+				let newSet: DiceSet = new DiceSet(set.count, new Die(set.dieType.sides, set.dieType.modifier));
+				newRoll.addSet(newSet);
+			});
+
+			newRolls.push({
+				roll: newRoll,
+				name: so.name,
+				category: so.category
+			});
+		});
+		if(append) {
+			this.rolls = this.rolls.concat(newRolls);
+		} else {
+			this.rolls = newRolls;
+		}
+	}
+
 	public getNames(): string[] {
 		return this.rolls.map((rso: RollStorageObject) => {
 			return rso.name || '';
@@ -37,5 +67,13 @@ export class RollManager {
 		return [...new Set(this.rolls.map((rso: RollStorageObject) => {
 			return rso.category || '';
 		}))];
+	}
+
+	public getSelected(): number {
+		return this.selected;
+	}
+
+	public setSelected(selected: number) {
+		this.selected = selected;
 	}
 };

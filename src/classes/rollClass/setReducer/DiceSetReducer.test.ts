@@ -1,7 +1,20 @@
-import { DiscardXHighest } from "./DiscardXHighest";
+import { DiceSetReducer } from "./DiceSetReducer";
 
-describe('Correctly omits', () => {
-	const discardXHighest = new DiscardXHighest(2);
+describe('Keep', () => {
+	const keepXHighest = new DiceSetReducer(2, true);
+
+	test('Normal rolls', () => {
+		const sampleRolls = [11, 89, 23, 7, 98];
+		expect(keepXHighest.reduce(sampleRolls)).toEqual(187);
+	})
+
+	test('Empty rolls', () => {
+		expect(keepXHighest.reduce([])).toEqual(0);
+	})
+});
+
+describe('Discard', () => {
+	const discardXHighest = new DiceSetReducer(2, false);
 
 	test('Normal rolls', () => {
 		const sampleRolls = [11, 89, 23, 7, 98];

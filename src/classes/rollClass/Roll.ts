@@ -1,7 +1,7 @@
 import { DiceSet } from "./DiceSet";
 
 export class Roll {
-	private sets: DiceSet[] = []; 
+	public sets: DiceSet[] = []; 
 
 	constructor(sets?: DiceSet[]) {
 		this.sets = sets ? sets : []
