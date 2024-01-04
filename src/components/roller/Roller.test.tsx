@@ -114,4 +114,22 @@ describe("Editing", () => {
 		expect(actualRoll.roll).toEqual(expectedRoll);
 		expect(actualRoll.category).toEqual(expectedCategory);
 	});
+
+	test('Can reset a selected roll', () => {
+		const roll = new Roll([
+			new DiceSet(1, new Die(6, 1))
+		]);
+		const startingName = "Test roll";
+		const startingCategory = "Roll category";
+		rollManager.addRoll(roll, {
+			rollName: startingName,
+			category: startingCategory
+		});
+		rollManager.setSelected(0);
+		render(<Roller rollManager={rollManager} />);
+		expect(screen.getAllByTestId("dieComponent-sides")).toHaveLength(1);
+		fireEvent.click(screen.getByTestId("roller-reset"));
+		expect(screen.queryAllByTestId("dieComponent-sides")).toHaveLength(0);
+		expect(rollManager.getSelected()).toEqual(-1);
+	});
 });

@@ -53,6 +53,7 @@ export const Roller = ({rollManager}: RProps) => {
 							rollManager.setSelected(-1);
 							setRoll(new Roll());
 						}}
+						data-testid="roller-reset"
 					>
 						Reset to new roll
 					</Button><br/>
