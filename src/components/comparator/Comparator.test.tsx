@@ -1,7 +1,11 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import { Comparator } from "./Comparator";
 import { RollManager } from "../../classes/rollManager/RollManager";
 import { Roll } from "../../classes/rollClass/Roll";
+
+beforeAll(() => {
+	global.ResizeObserver = require('resize-observer-polyfill')
+});
 
 describe("Presentation", () => {
 	test("Should display prompt only when no rolls have been saved", () => {
@@ -26,10 +30,7 @@ describe("Selection", () => {
 			rollName: "Roll #2"
 		});
 		render(<Comparator rollManager={manager} />);
-		const selectionButtons = screen.queryAllByLabelText("Toggle selected");
+		const selectionButtons = screen.queryAllByTestId("comparator-select");
 		expect(selectionButtons).toHaveLength(manager.rolls.length);
-		selectionButtons.forEach((button) => {
-			fireEvent.click(button);
-		});
 	});
 });

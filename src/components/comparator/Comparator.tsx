@@ -11,7 +11,7 @@ Chart.register(
 	Title,
 	Tooltip,
 	Legend
-  );
+);
 
 type CProps = {
 	rollManager: RollManager
@@ -71,18 +71,11 @@ export const Comparator = ({rollManager}: CProps) => {
 				<Typography variant="body1" data-testid="comparator-prompt">No rolls available! Save a roll in the 'roller' page to have it available here.</Typography>
 			</> : <>
 				<Grid container>
-					<Grid item lg={6} sm={12}>
+					<Grid item lg={6} sm={12} display="flex" justifyContent="center">
 						{
 							rollManager.rolls.map((roll, index) => {
-								return <Typography variant="body1">
+								return <Typography variant="body1" data-testid="comparator-select" key={index} onClick={() => {toggleSelected(index)}}>
 									<Checkbox
-										key={index}
-										inputProps={{
-											"aria-label": "Toggle selected"
-										}}
-										onChange={(event) => {
-											toggleSelected(index)
-										}}
 										checked={selectedRolls[index]}
 									/>
 									{roll.name}
