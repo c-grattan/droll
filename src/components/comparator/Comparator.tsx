@@ -39,28 +39,23 @@ export const Comparator = ({rollManager}: CProps) => {
 		}
 	});
 
-	const options = {
-		scales: {
-			x: {
-				stacked: true
-			}
-		}
-	};
-
 	const data: ChartData<"bar", (number | [number, number] | null)[], unknown> = {
 		labels: rolls.map((rso) => {return rso.name}),
 		datasets: [
 			{
 				label: "Minimum",
-				data: rolls.map((rso) => {return rso.roll.getMinimum()})
+				data: rolls.map((rso) => {return rso.roll.getMinimum()}),
+				backgroundColor: '#deeaee'
 			},
 			{
 				label: "Average",
-				data: rolls.map((rso) => {return rso.roll.getAverage()})
+				data: rolls.map((rso) => {return rso.roll.getAverage()}),
+				backgroundColor: '#eea29a'
 			},
 			{
 				label: "Maximum",
-				data: rolls.map((rso) => {return rso.roll.getMaximum()})
+				data: rolls.map((rso) => {return rso.roll.getMaximum()}),
+				backgroundColor: '#b1cbbb'
 			}
 		]
 	};
@@ -71,7 +66,7 @@ export const Comparator = ({rollManager}: CProps) => {
 				<Typography variant="body1" data-testid="comparator-prompt">No rolls available! Save a roll in the 'roller' page to have it available here.</Typography>
 			</> : <>
 				<Grid container>
-					<Grid item lg={6} sm={12} display="flex" justifyContent="center">
+					<Grid item lg={6} sm={12} display="flex" justifyContent="center"><ul>
 						{
 							rollManager.rolls.map((roll, index) => {
 								return <Typography variant="body1" data-testid="comparator-select" key={index} onClick={() => {toggleSelected(index)}}>
@@ -85,9 +80,9 @@ export const Comparator = ({rollManager}: CProps) => {
 								</Typography>
 							})
 						}
-					</Grid>
+					</ul></Grid>
 					<Grid item lg={6} sm={12}>
-						<Bar options={options} data={data} />
+						<Bar data={data} />
 					</Grid>
 				</Grid>
 			</>
