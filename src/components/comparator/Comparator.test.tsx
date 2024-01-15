@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { Comparator } from "./Comparator";
 import { RollManager } from "../../classes/rollManager/RollManager";
 import { Roll } from "../../classes/rollClass/Roll";
@@ -21,16 +21,28 @@ describe("Presentation", () => {
 });
 
 describe("Selection", () => {
-	test("Can add saved rolls to comparator selection", () => {
-		const manager: RollManager = new RollManager();
+	let manager: RollManager;
+	beforeEach(() => {
+		manager = new RollManager();
 		manager.addRoll(new Roll(), {
 			rollName: "Roll #1"
 		});
 		manager.addRoll(new Roll(), {
 			rollName: "Roll #2"
 		});
+	});
+
+	test("Correct number of rolls are available", () => {
 		render(<Comparator rollManager={manager} />);
 		const selectionButtons = screen.queryAllByTestId("comparator-select");
 		expect(selectionButtons).toHaveLength(manager.rolls.length);
+	});
+
+	test("Rolls can be selected", () => {
+		render(<Comparator rollManager={manager} />);
+		const selectionButtons = screen.queryAllByLabelText("Select roll");
+		selectionButtons.forEach((button) => {
+			fireEvent.click(button);
+		});
 	});
 });

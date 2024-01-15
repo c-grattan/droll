@@ -76,6 +76,9 @@ export const Comparator = ({rollManager}: CProps) => {
 							rollManager.rolls.map((roll, index) => {
 								return <Typography variant="body1" data-testid="comparator-select" key={index} onClick={() => {toggleSelected(index)}}>
 									<Checkbox
+										inputProps={{
+											'aria-label': 'Select roll'
+										}}
 										checked={selectedRolls[index]}
 									/>
 									{roll.name}
