@@ -44,7 +44,7 @@ export const Roller = ({rollManager}: RProps) => {
 	}
 
 	return (<>
-		<Grid container spacing={1}>
+		<Grid container spacing={1} data-testid="roller">
 			<Grid item xs={9}>
 				{!noSelection && <>
 					<Typography variant="body1">Currently editing: {rollManager.rolls[rollManager.getSelected()].name}</Typography>

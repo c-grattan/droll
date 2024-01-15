@@ -9,6 +9,7 @@ import { Container } from '@mui/material';
 import { Navigation } from './components/navbar/Navigation';
 import { RollManagerComponent } from './components/rollmanagercomponent/RollManagerComponent';
 import { useState } from 'react';
+import { Comparator } from './components/comparator/Comparator';
 
 function App() {
 	const [rollManager] = useState(new RollManager());
@@ -30,6 +31,10 @@ function App() {
 				{
 					title: "Roll Manager",
 					content: <RollManagerComponent rollManager={rollManager} changeTab={(tab) => setCurrentTab(tab)} />
+				},
+				{
+					title: "Comparator",
+					content: <Comparator rollManager={rollManager} />
 				}
 			]} />
 		</Container>

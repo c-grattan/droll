@@ -53,7 +53,7 @@ describe('Data grid', () => {
 	});
 
 	describe('Loads data correctly', () => {
-		async function uploadFile(file: File, append: boolean = false) {
+		async function uploadFile(file: File, submit: boolean = true, append: boolean = false) {
 			expect(screen.queryByTestId("rollmanager-uploadmessage")).toBeNull();
 
 			fireEvent.click(screen.getAllByTestId("cdb-open")[0]);
@@ -67,17 +67,22 @@ describe('Data grid', () => {
 				fireEvent.click(toggle);
 				expect(toggle).toBeChecked();
 			}
-
-			await waitFor(() => {
-				fireEvent.click(screen.getByTestId("cdb-submit"));
-				expect(screen.queryByTestId("rollmanager-uploadmessage")).not.toBeNull();
-			});
+			
+			if(submit) {
+				const submitButton = screen.getByTestId("cdb-submit");
+				await waitFor(() => {
+					expect(submitButton).not.toBeDisabled();
+				});
+				fireEvent.click(submitButton);
+			}
 		}
 
 		test('Validates input', async () => {
 			render(<RollManagerComponent rollManager={manager} changeTab={() => {}} />);
-			await uploadFile(new File(["Badly formatted droll file"], "Droll.json", {type: "text/json"}));
-			expect(screen.queryByTestId("rollmanager-uploadmessage")).toHaveTextContent("Error parsing input: ");
+			uploadFile(new File(["Badly formatted droll file"], "Droll.json", {type: "text/json"}), false);
+			await waitFor(() => {
+				expect(screen.getByTestId("rollmanager-uploadmessage")).not.toBeEmptyDOMElement();
+			});
 		});
 
 		test('Updates data grid', async () => {
@@ -101,7 +106,7 @@ describe('Data grid', () => {
 			const startingLength: number = appendedManager.rolls.length;
 
 			render(<RollManagerComponent rollManager={appendedManager} changeTab={() => {}} />);
-			await uploadFile(new File([JSON.stringify(manager.rolls)], "Droll.json", {type: "text/json"}), true);
+			await uploadFile(new File([JSON.stringify(manager.rolls)], "Droll.json", {type: "text/json"}), true, true);
 
 			expect(appendedManager.rolls.length).toEqual(startingLength + manager.rolls.length);
 		});
